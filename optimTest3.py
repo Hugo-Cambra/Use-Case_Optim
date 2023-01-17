@@ -29,12 +29,9 @@ num_iterations = 1000
 # Define the search space
 # Each particle represents a schedule
 # The schedule is a list of 0s and 1s, where 0 represents off and 1 represents on
-# search_space = [[[random.randint(0, 1) for _ in range(len(power[i]))] for _ in range(num_particles)] for i in range(num_houses)]
-# search_space = [[random.randint(0, 1) for _ in range(num_appliances[i])] for i in range(num_houses)]
 search_space = [[random.randint(0, 1) for _ in range(11)] for _ in range(num_particles)]
 
 # Initialize the velocity
-# velocity = [[[0 for _ in range(len(power[i]))] for _ in range(num_particles)] for i in range(num_houses)]
 velocity = [[0 for _ in range(11)] for _ in range(num_particles)]
 
 # Define a list to store the fitness values
@@ -43,26 +40,6 @@ fitness_values = []
 counter = 0
 
 # Define the fitness function
-# def fitness_function(schedule,house_power):
-#     global counter
-#     if counter >= num_iterations:
-#         return None
-#     total_consumption = sum(house_power[i] * schedule[i] for i in range(len(house_power)))
-#     if total_consumption > L or total_consumption < D:
-#         return float('inf')
-#     fitness_values.append(total_consumption)
-#     counter += 1
-#     return total_consumption
-# def fitness_function(schedule):
-#     global counter
-#     if counter >= num_iterations:
-#         return None
-#     total_consumption = sum(power[i] * schedule[i] * time_duration[i] for i in range(11)) 
-#     if total_consumption > L or total_consumption < D:
-#         return float('inf')
-#     fitness_values.append(total_consumption)
-#     counter += 1
-#     return total_consumption
 def fitness_function(schedule):
     global counter
     if counter >= num_iterations:
@@ -105,10 +82,6 @@ for _ in range(num_iterations):
         if fitness < global_best_fitness:
             global_best = particle
             global_best_fitness = fitness
-        # Update the velocity and position
-        # for j in range(11):
-        #     velocity[i][j] = w * velocity[i][j] + c1 * random.random() * (personal_best[i][j] - particle[j]) + c2 * random.random() * (global_best[j] - particle[j])
-        #     particle[j] += velocity[i][j]
         for i in range(num_particles):
             # Update the velocity
             velocity[i] = [w*velocity[i][j] + c1*random.random()*(personal_best[i][j]-swarm[i][j]) + c2*random.random()*(global_best[j]-swarm[i][j]) for j in range(len(power))]
